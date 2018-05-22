@@ -4,12 +4,13 @@
 #include <boost/noncopyable.hpp>
 #include <vizkit3d/Vizkit3DPlugin.hpp>
 #include <osg/Geode>
-#include <ASN.1/BaseTypes>
+#include <ASN.1/BaseTypes.hpp>
+#include <ASN.1/Pose.hpp>
 
 namespace vizkit3d
 {
     class ASNViz
-        : public vizkit3d::Vizkit3DPlugin<>
+        : public vizkit3d::Vizkit3DPlugin<PoseWrapper::Pose3D>
         , boost::noncopyable
     {
     Q_OBJECT
@@ -17,8 +18,8 @@ namespace vizkit3d
         ASNViz();
         ~ASNViz();
 
-    Q_INVOKABLE void updateData( const &sample)
-    {vizkit3d::Vizkit3DPlugin<>::updateData(sample);}
+    Q_INVOKABLE void updateData( const PoseWrapper::Pose3D &sample)
+    {vizkit3d::Vizkit3DPlugin<PoseWrapper::Pose3D>::updateData(sample);}
 
     protected:
         virtual osg::ref_ptr<osg::Node> createMainNode();

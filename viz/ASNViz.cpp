@@ -34,7 +34,7 @@ void ASNViz::updateMainNode ( osg::Node* node )
     // Update the main node using the data in p->data
 }
 
-void ASNViz::updateDataIntern( const& value)
+void ASNViz::updateDataIntern( const PoseWrapper::Pose3D &value)
 {
     p->data = value;
     std::cout << "got new sample data" << std::endl;
