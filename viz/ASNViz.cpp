@@ -7,11 +7,11 @@ struct ASNViz::Data {
     // Copy of the value given to updateDataIntern.
     //
     // Making a copy is required because of how OSG works
-     data;
+    ASNTYPE data;
 };
 
 
-ASNViz::ASNViz()
+template <ASNTYPE,ROCKTYPE> ASNViz::ASNViz()
     : p(new Data)
 {
 }

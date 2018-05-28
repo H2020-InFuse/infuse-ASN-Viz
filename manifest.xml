@@ -16,6 +16,6 @@
   -->
   <depend package="gui/vizkit3d" />
   <depend package="cdff/CDFF" />
-  <depend package="base/types_ASN_converters" />
+  <depend package="infuse/base-types-ASN-converter" />
   
 </package>

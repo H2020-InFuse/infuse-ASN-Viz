@@ -9,8 +9,8 @@
 
 namespace vizkit3d
 {
-    class ASNViz
-        : public vizkit3d::Vizkit3DPlugin<PoseWrapper::Pose3D>
+    template <ASNTYPE,ROCKTYPE> class ASNViz
+        : public vizkit3d::Vizkit3DPlugin< ASNTYPE >
         , boost::noncopyable
     {
     Q_OBJECT
@@ -18,8 +18,8 @@ namespace vizkit3d
         ASNViz();
         ~ASNViz();
 
-    Q_INVOKABLE void updateData( const PoseWrapper::Pose3D &sample)
-    {vizkit3d::Vizkit3DPlugin<PoseWrapper::Pose3D>::updateData(sample);}
+    Q_INVOKABLE void updateData( const ASNTYPE &sample)
+    {vizkit3d::Vizkit3DPlugin< ASNTYPE >::updateData(sample);}
 
     protected:
         virtual osg::ref_ptr<osg::Node> createMainNode();
