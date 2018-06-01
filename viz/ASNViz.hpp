@@ -40,7 +40,9 @@ namespace vizkit3d
     class ASNViz : public vizkit3d::VizkitPluginFactory {
         public:
         
-        ASNViz(){};      
+        enum ASNPlugins {RigidBodyState, Motion2D};
+
+        ASNViz();      
 
 
         /**
@@ -52,6 +54,11 @@ namespace vizkit3d
         virtual QObject* createPlugin(QString const& pluginName);
 
 
+        private:
+        void registerViz(const std::string& name, int index);
+        int regindex;
+        std::map<std::string, int> nameindex;
+        QStringList pluginNames;
     };
 
 
