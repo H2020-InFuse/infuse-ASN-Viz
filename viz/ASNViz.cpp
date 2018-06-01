@@ -5,16 +5,16 @@
 
 using namespace vizkit3d;
 
-Asn1SccRigidBodyStateViz::Asn1SccRigidBodyStateViz(){
+// Asn1SccRigidBodyStateViz::Asn1SccRigidBodyStateViz(){
 
-    // Create and add plugin
-    plugin = dynamic_cast<VizPluginBase*>(getWidget()->loadPlugin("base", "RigidBodyStateVisualization"));
-    if (NULL == plugin)
-    {
-        throw std::runtime_error("loading plugin BodyStateVisualization from base failed");
-        }
+//     // Create and add plugin
+//     // plugin = dynamic_cast<VizPluginBase*>(getWidget()->loadPlugin("base", "RigidBodyStateVisualization"));
+//     // if (NULL == plugin)
+//     // {
+//     //     throw std::runtime_error("loading plugin BodyStateVisualization from base failed");
+//     //     }
 
-};
+// };
 //Macro that makes this plugin loadable in ruby, this is optional.
 VizkitQtPlugin(Asn1SccRigidBodyStateViz)
 

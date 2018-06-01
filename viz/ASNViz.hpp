@@ -16,46 +16,48 @@
 
 namespace vizkit3d
 {
-    class Asn1SccRigidBodyStateViz: public vizkit3d::Vizkit3DPlugin< asn1SccRigidBodyState >, boost::noncopyable
+    class Asn1SccRigidBodyStateViz: public vizkit3d::RigidBodyStateVisualization, public vizkit3d::VizPluginAddType< asn1SccRigidBodyState >
     {
-        Q_OBJECT
+        
         public:
-            Asn1SccRigidBodyStateViz();
+            Asn1SccRigidBodyStateViz(){};
             virtual ~Asn1SccRigidBodyStateViz(){};
 
         Q_INVOKABLE void updateData( const asn1SccRigidBodyState &sample){
             //convert
             base::samples::RigidBodyState rbs;
             RigidBodyState_fromAsn1(rbs,sample);
-            dynamic_cast<vizkit3d::RigidBodyStateVisualization*>(plugin)->updateData(rbs);
+            // dynamic_cast<vizkit3d::RigidBodyStateVisualization*>(plugin)->updateData(rbs);
+            vizkit3d::RigidBodyStateVisualization::updateData(rbs);
         }
 
         virtual void updateDataIntern(const asn1SccRigidBodyState &data){
-            //not used or convert??
-            //base::samples::RigidBodyState rbs;
-            //dynamic_cast<vizkit3d::RigidBodyStateVisualization*>(plugin)->updateDataIntern(rbs);
+             //not used or convert??
+            base::samples::RigidBodyState rbs;
+            RigidBodyState_fromAsn1(rbs,data);
+            vizkit3d::RigidBodyStateVisualization::updateDataIntern(rbs);
 
-        }
+         }
 
-        virtual void updateMainNode(osg::Node* node){
-            //vizkit3d::RigidBodyStateVisualization::updateMainNode(node);
-        }
+        // virtual void updateMainNode(osg::Node* node){
+        //     vizkit3d::RigidBodyStateVisualization::updateMainNode(node);
+        // }
 
         // virtual osg::ref_ptr<osg::Node> createMainNode()
         // {
         //     // Geode is a common node used for vizkit3d plugins. It allows to display
         //     // "arbitrary" geometries
-        //     return plugin->createMainNode();
+        //     return vizkit3d::RigidBodyStateVisualization::createMainNode();
         // }
 
         // virtual void updateMainNode ( osg::Node* node )
         // {
-        //     return plugin->updateMainNode(node);
+        //     return vizkit3d::RigidBodyStateVisualization::updateMainNode(node);
         // }
 
         private:
 
-            VizPluginBase* plugin;
+            // VizPluginBase* plugin;
 
     };
 }
