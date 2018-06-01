@@ -1,64 +1,60 @@
 #ifndef ASN_Viz_ASNViz_H
 #define ASN_Viz_ASNViz_H
 
-#include <boost/noncopyable.hpp>
 #include <vizkit3d/RigidBodyStateVisualization.hpp>
-#include <osg/Geode>
-//#include <ASN.1/BaseTypes.hpp>
-//#include <ASN.1/Pose.hpp>
+#include <vizkit3d/MotionCommandVisualization.hpp>
+#include "Conversion.hpp"
 
-#include "asn1/RigidBodyState.h"
-#include <base_support/asn1RigidBodyStateConvert.hpp>
-
-#include "PluginNames.hpp"
-
-//#define ADD_TYPES()
 
 namespace vizkit3d
 {
-    class Asn1SccRigidBodyStateViz: public vizkit3d::RigidBodyStateVisualization, public vizkit3d::VizPluginAddType< asn1SccRigidBodyState >
+    template <class ASNTYPE, class ROCKTYPE, class ROCKVIS> class Asn1RockViz: public ROCKVIS, public vizkit3d::VizPluginAddType< ASNTYPE >
     {
         
         public:
-            Asn1SccRigidBodyStateViz(){};
-            virtual ~Asn1SccRigidBodyStateViz(){};
+            Asn1RockViz(){};
+            virtual ~Asn1RockViz(){};
 
-        Q_INVOKABLE void updateData( const asn1SccRigidBodyState &sample){
+        Q_INVOKABLE void updateData( const ASNTYPE &sample){
             //convert
-            base::samples::RigidBodyState rbs;
-            RigidBodyState_fromAsn1(rbs,sample);
+            ROCKTYPE rocktype = convertToRock(sample);
+            //RigidBodyState_fromAsn1(rbs,sample);
             // dynamic_cast<vizkit3d::RigidBodyStateVisualization*>(plugin)->updateData(rbs);
-            vizkit3d::RigidBodyStateVisualization::updateData(rbs);
+            ROCKVIS::updateData(rocktype);
         }
 
-        virtual void updateDataIntern(const asn1SccRigidBodyState &data){
+        virtual void updateDataIntern(const ASNTYPE &data){
              //not used or convert??
-            base::samples::RigidBodyState rbs;
-            RigidBodyState_fromAsn1(rbs,data);
-            vizkit3d::RigidBodyStateVisualization::updateDataIntern(rbs);
+            ROCKTYPE rocktype = convertToRock(data);
+            //RigidBodyState_fromAsn1(rbs,data);
+            ROCKVIS::updateDataIntern(rocktype);
 
          }
 
-        // virtual void updateMainNode(osg::Node* node){
-        //     vizkit3d::RigidBodyStateVisualization::updateMainNode(node);
-        // }
+    };
 
-        // virtual osg::ref_ptr<osg::Node> createMainNode()
-        // {
-        //     // Geode is a common node used for vizkit3d plugins. It allows to display
-        //     // "arbitrary" geometries
-        //     return vizkit3d::RigidBodyStateVisualization::createMainNode();
-        // }
+    /**
+     * The Plugin Factory
+     */
 
-        // virtual void updateMainNode ( osg::Node* node )
-        // {
-        //     return vizkit3d::RigidBodyStateVisualization::updateMainNode(node);
-        // }
+    class ASNViz : public vizkit3d::VizkitPluginFactory {
+        public:
+        
+        ASNViz(){};      
 
-        private:
 
-            // VizPluginBase* plugin;
+        /**
+	* Returns a list of all available visualization plugins.
+	* @return list of plugin names
+	*/
+        virtual QStringList* getAvailablePlugins() const;
+	
+        virtual QObject* createPlugin(QString const& pluginName);
+
 
     };
+
+
+
 }
 #endif

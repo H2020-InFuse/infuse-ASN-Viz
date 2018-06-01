@@ -12,6 +12,6 @@ rock_vizkit_plugin(ASN_Viz-viz
     DEPS ASN_Viz 
     DEPS_PKGCONFIG base-types base_support
     MOC ASNViz.hpp
-    HEADERS ASNViz.hpp)
+    HEADERS ASNViz.hpp Conversion.hpp)
 
 target_include_directories(ASN_Viz-viz PUBLIC ${CMAKE_BINARY_DIR})

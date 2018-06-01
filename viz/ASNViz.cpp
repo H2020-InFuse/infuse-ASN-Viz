@@ -1,41 +1,47 @@
-#include <iostream>
 #include "ASNViz.hpp"
 
-#include <vizkit3d/Vizkit3DWidget.hpp>
 
 using namespace vizkit3d;
 
-// Asn1SccRigidBodyStateViz::Asn1SccRigidBodyStateViz(){
+//VizkitQtPlugin(Asn1SccRigidBodyStateViz)
+//VizkitQtPlugin(Asn1SccMotion2dViz)
 
-//     // Create and add plugin
-//     // plugin = dynamic_cast<VizPluginBase*>(getWidget()->loadPlugin("base", "RigidBodyStateVisualization"));
-//     // if (NULL == plugin)
-//     // {
-//     //     throw std::runtime_error("loading plugin BodyStateVisualization from base failed");
-//     //     }
 
-// };
-//Macro that makes this plugin loadable in ruby, this is optional.
-VizkitQtPlugin(Asn1SccRigidBodyStateViz)
-
-// osg::ref_ptr<osg::Node> ASNViz::createMainNode()
-// {
-//     // Geode is a common node used for vizkit3d plugins. It allows to display
-//     // "arbitrary" geometries
-//     return new osg::Geode();
-// }
-
-// void ASNViz::updateMainNode ( osg::Node* node )
-// {
-//     osg::Geode* geode = static_cast<osg::Geode*>(node);
-//     // Update the main node using the data in p->data
-// }
-
-// void ASNViz::updateDataIntern( const PoseWrapper::Pose3D &value)
-// {
-//     p->data = value;
-//     std::cout << "got new sample data" << std::endl;
-// }
+//instanciate templated viz classes
+//TODO use typedef?
+typedef Asn1RockViz<asn1SccRigidBodyState,base::samples::RigidBodyState,vizkit3d::RigidBodyStateVisualization> Asn1SccRigidBodyStateViz;
+typedef Asn1RockViz<asn1SccMotion2D,base::commands::Motion2D,vizkit3d::MotionCommandVisualization>  Asn1SccMotion2dViz;
 
 
 
+
+/**
+	* Returns a list of all available visualization plugins.
+	* @return list of plugin names
+	*/
+    QStringList* ASNViz::getAvailablePlugins() const
+	{
+	    QStringList *pluginNames = new QStringList();
+	    pluginNames->push_back("Asn1SccRigidBodyStateViz");
+	    pluginNames->push_back("Asn1SccMotion2dViz");
+	    return pluginNames;
+	}
+	
+    QObject* ASNViz::createPlugin(QString const& pluginName){
+	    vizkit3d::VizPluginBase* plugin = 0;
+	    if (pluginName == "Asn1SccRigidBodyStateViz")
+	    {
+		    plugin = new Asn1SccRigidBodyStateViz();
+	    }
+	    else if (pluginName == "Asn1SccMotion2dViz")
+	    {
+    		plugin = new MotionCommandVisualization();
+	    }
+	    
+        if (plugin) 
+	    {
+		    return plugin;
+	    }
+	    return NULL;
+        };
+Q_EXPORT_PLUGIN2(ASNViz, ASNViz)
