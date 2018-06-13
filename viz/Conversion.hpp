@@ -16,3 +16,18 @@
         Motion2D_fromAsn1(rocktype,asnVal);
         return rocktype;
     }
+
+#include <sensor_samples_support/asn1PointcloudConvert.hpp>
+    base::samples::Pointcloud convertToRock(const asn1SccPointcloud& asnVal){
+        base::samples::Pointcloud rocktype;
+        Pointcloud_fromAsn1(rocktype,asnVal);
+        return rocktype;
+    }
+
+#include <sensor_samples_support/asn1LaserScanConvert.hpp>
+
+    base::samples::LaserScan convertToRock(const asn1SccLaserScan& asnVal){
+        base::samples::LaserScan rocktype;
+        LaserScan_fromAsn1(rocktype,asnVal);
+        return rocktype;
+    }

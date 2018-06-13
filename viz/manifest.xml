@@ -3,4 +3,11 @@
   </description>
   <author>Sylvain Joyeux/sylvain.joyeux@dfki.de</author>
   <license>GPLv2 or later</license>
+
+  <depend package="gui/vizkit3d" />
+  <depend package="cdff/CDFF" />
+  <depend package="types/base" />
+  <depend package="types/base_support" />
+  <depend package="types/sensor_samples"/>
+  <depend package="types/sensor_samples_support" />
 </package>

@@ -1,9 +1,7 @@
 #ifndef ASN_Viz_ASNViz_H
 #define ASN_Viz_ASNViz_H
 
-#include <vizkit3d/RigidBodyStateVisualization.hpp>
-#include <vizkit3d/MotionCommandVisualization.hpp>
-#include "Conversion.hpp"
+#include <vizkit3d/Vizkit3DPlugin.hpp>
 
 
 namespace vizkit3d
@@ -40,7 +38,7 @@ namespace vizkit3d
     class ASNViz : public vizkit3d::VizkitPluginFactory {
         public:
         
-        enum ASNPlugins {RigidBodyState, Motion2D};
+        enum ASNPlugins {RigidBodyStateViz, Motion2DViz, PointcloudViz, LaserScanViz};
 
         ASNViz();      
 
@@ -58,7 +56,6 @@ namespace vizkit3d
         void registerViz(const std::string& name, int index);
         int regindex;
         std::map<std::string, int> nameindex;
-        QStringList pluginNames;
     };
 
 
