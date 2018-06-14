@@ -1,4 +1,5 @@
-#pragma once
+#ifndef ASNViz_CONVERSION
+#define ASNViz_CONVERSION
 
 #include <base_support/asn1RigidBodyStateConvert.hpp>
 
@@ -31,3 +32,5 @@
         LaserScan_fromAsn1(rocktype,asnVal);
         return rocktype;
     }
+
+#endif

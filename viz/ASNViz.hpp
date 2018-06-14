@@ -1,14 +1,17 @@
 #ifndef ASN_Viz_ASNViz_H
 #define ASN_Viz_ASNViz_H
 
+
 #include <vizkit3d/Vizkit3DPlugin.hpp>
+
+#include "Conversion.hpp"
+#include <vizkit3d/LaserScanVisualization.hpp>
 
 
 namespace vizkit3d
 {
     template <class ASNTYPE, class ROCKTYPE, class ROCKVIS> class Asn1RockViz: public ROCKVIS, public vizkit3d::VizPluginAddType< ASNTYPE >
     {
-        
         public:
             Asn1RockViz(){};
             virtual ~Asn1RockViz(){};
@@ -31,6 +34,7 @@ namespace vizkit3d
 
     };
 
+  
     /**
      * The Plugin Factory
      */
@@ -38,7 +42,7 @@ namespace vizkit3d
     class ASNViz : public vizkit3d::VizkitPluginFactory {
         public:
         
-        enum ASNPlugins {RigidBodyStateViz, Motion2DViz, PointcloudViz, LaserScanViz};
+        enum ASNPlugins {RigidBodyState, Motion2D, Pointcloud, LaserScan};
 
         ASNViz();      
 
@@ -61,4 +65,6 @@ namespace vizkit3d
 
 
 }
+
+
 #endif

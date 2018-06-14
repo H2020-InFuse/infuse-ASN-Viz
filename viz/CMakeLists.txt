@@ -9,6 +9,7 @@ esrocos_asn1_types_package(${LIB}_local_types
     
 rock_vizkit_plugin(ASN_Viz-viz
     ASNViz.cpp
+    MOC LaserScanViz.hpp
     DEPS ASN_Viz
     DEPS_PKGCONFIG base-types base_support sensor_samples_support base-viz
     MOC ASNViz.hpp
