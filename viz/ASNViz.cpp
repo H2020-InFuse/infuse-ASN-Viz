@@ -3,12 +3,10 @@
 //#include "Conversion.hpp"
 using namespace vizkit3d;
 
-#include <vizkit3d/MotionCommandVisualization.hpp>
-#include <vizkit3d/PointcloudVisualization.hpp>
 
 #include "LaserScanViz.hpp"
 #include "RigidBodyStateViz.hpp"
-
+#include "PointcloudViz.hpp"
 
 
 
@@ -29,6 +27,7 @@ const asn1SccT_UInt32 frameMaxBytes = 2359296;
 ASNViz::ASNViz(){
     registerViz("RigidBodyStateViz",RigidBodyState);
     registerViz("LaserScanViz", LaserScan);
+    registerViz("PointcloudViz", Pointcloud);
 }
 
 
@@ -60,7 +59,7 @@ QObject* ASNViz::createPlugin(QString const& pluginName){
     switch (index){
         case RigidBodyState:    return new RigidBodyStateViz();
         case Motion2D:          return nullptr;
-        case Pointcloud:        return nullptr;
+        case Pointcloud:        return new PointcloudViz();
         case LaserScan:         return new LaserScanViz();
         default: return nullptr;
     };
