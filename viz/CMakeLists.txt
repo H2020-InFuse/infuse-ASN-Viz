@@ -17,5 +17,5 @@ rock_vizkit_plugin(ASN_Viz-viz
     MOC ASNViz.hpp
     HEADERS ASNViz.hpp Conversion.hpp)
 
-add_dependencies(ASN_Viz-viz asn_local_types_generate_c)
+add_dependencies(ASN_Viz-viz ${LIB}_local_types_generate_c)
 target_include_directories(ASN_Viz-viz PUBLIC ${CMAKE_BINARY_DIR})
