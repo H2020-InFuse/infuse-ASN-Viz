@@ -1,12 +1,6 @@
 
 
-set(LIB ${CMAKE_PROJECT_NAME})
 
-# ASN.1 types are imported and compiled locally to the project, but not installed
-esrocos_asn1_types_package(${LIB}_local_types
-    OUTDIR asn1
-    IMPORT types/base types/sensor_samples)
-    
 rock_vizkit_plugin(ASN_Viz-viz
     ASNViz.cpp
     MOC ASNViz.hpp
@@ -16,7 +10,6 @@ rock_vizkit_plugin(ASN_Viz-viz
         DepthMapViz.hpp
     DEPS ASN_Viz
     DEPS_PKGCONFIG base-types base_support sensor_samples_support base-viz
-    HEADERS ASNViz.hpp Conversion.hpp)
+    HEADERS ASNViz.hpp)
 
-add_dependencies(ASN_Viz-viz ${LIB}_local_types_generate_c)
 target_include_directories(ASN_Viz-viz PUBLIC ${CMAKE_BINARY_DIR})
