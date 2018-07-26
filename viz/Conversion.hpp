@@ -33,4 +33,12 @@
         return rocktype;
     }
 
+#include <sensor_samples_support/asn1DepthMapConvert.hpp>
+
+    base::samples::DepthMap convertToRock(const asn1SccDepthMap& asnVal){
+        base::samples::DepthMap rocktype;
+        DepthMap_fromAsn1(rocktype,asnVal);
+        return rocktype;
+    }
+
 #endif
