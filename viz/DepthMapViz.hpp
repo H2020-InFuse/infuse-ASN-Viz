@@ -3,6 +3,8 @@
 #include <vizkit3d/DepthMapVisualization.hpp>
 #include <sensor_samples_support/asn1DepthMapConvert.hpp>
 
+Q_DECLARE_METATYPE(asn1SccDepthMap);
+
 namespace vizkit3d
 {
   class DepthMapViz: public vizkit3d::DepthMapVisualization, public vizkit3d::VizPluginAddType< asn1SccDepthMap >
@@ -10,7 +12,7 @@ namespace vizkit3d
         Q_OBJECT
         public:
             DepthMapViz(){};
-            virtual ~DepthMapViz(){};
+            virtual ~DepthMapViz(){qRegisterMetaType<asn1SccDepthMap>();};
         Q_INVOKABLE void updateData( const asn1SccDepthMap &sample){
             base::samples::DepthMap rocktype;
             DepthMap_fromAsn1(rocktype,sample);

@@ -3,13 +3,15 @@
 #include <vizkit3d/RigidBodyStateVisualization.hpp>
 #include <base_support/asn1RigidBodyStateConvert.hpp>
 
+Q_DECLARE_METATYPE(asn1SccRigidBodyState);
+
 namespace vizkit3d
 {
   class RigidBodyStateViz: public vizkit3d::RigidBodyStateVisualization, public vizkit3d::VizPluginAddType< asn1SccRigidBodyState >
     {
         Q_OBJECT
         public:
-            RigidBodyStateViz(){};
+            RigidBodyStateViz(){qRegisterMetaType<asn1SccRigidBodyState>();};
             virtual ~RigidBodyStateViz(){};
         Q_INVOKABLE void updateData( const asn1SccRigidBodyState &sample){
             base::samples::RigidBodyState rocktype;

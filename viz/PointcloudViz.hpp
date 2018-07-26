@@ -3,6 +3,8 @@
 #include <vizkit3d/PointcloudVisualization.hpp>
 #include <sensor_samples_support/asn1PointcloudConvert.hpp>
 
+Q_DECLARE_METATYPE(asn1SccPointcloud);
+
 namespace vizkit3d
 {
   class PointcloudViz: public vizkit3d::PointcloudVisualization, public vizkit3d::VizPluginAddType< asn1SccPointcloud >
@@ -10,7 +12,7 @@ namespace vizkit3d
         Q_OBJECT
         public:
             PointcloudViz(){};
-            virtual ~PointcloudViz(){};
+            virtual ~PointcloudViz(){qRegisterMetaType<asn1SccPointcloud>();};
         Q_INVOKABLE void updateData( const asn1SccPointcloud &sample){
             base::samples::Pointcloud rocktype;
             Pointcloud_fromAsn1(rocktype,sample);
