@@ -9,7 +9,5 @@ rock_vizkit_plugin(ASN_Viz-viz
         PointcloudViz.hpp
         DepthMapViz.hpp
     DEPS ASN_Viz
-    DEPS_PKGCONFIG base-types base_support sensor_samples_support base-viz
+    DEPS_PKGCONFIG base-types base_support sensor_samples_support base-viz infuse_asn1_types
     HEADERS ASNViz.hpp)
-
-target_include_directories(ASN_Viz-viz PUBLIC ${CMAKE_BINARY_DIR})

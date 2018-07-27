@@ -6,8 +6,8 @@
 
   <depend package="gui/vizkit3d" />
   <depend package="cdff/CDFF" />
-  <depend package="types/base" />
+  <depend package="infuse/asn1_types" />
   <depend package="types/base_support" />
-  <depend package="types/sensor_samples"/>
   <depend package="types/sensor_samples_support" />
+
 </package>
