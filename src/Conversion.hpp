@@ -3,6 +3,7 @@
 
 #include <base_support/asn1RigidBodyStateConvert.hpp>
 #include <base_support/asn1Motion2DConvert.hpp>
+#include <base_support/asn1Vector3dConvert.hpp>
 #include <sensor_samples_support/asn1PointcloudConvert.hpp>
 #include <sensor_samples_support/asn1LaserScanConvert.hpp>
 #include <sensor_samples_support/asn1DepthMapConvert.hpp>
@@ -20,6 +21,7 @@ namespace ASNtoRock{
 
     static ::base::samples::DepthMap convertToRock(const asn1SccDepthMap& asnVal);
 
+    static ::base::Vector3d convertToRock(const asn1SccVector3d& asnVal);
 }
 
 #endif

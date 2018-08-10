@@ -33,5 +33,11 @@ namespace ASNtoRock{
         return rocktype;
     }
 
+    base::Vector3d convertToRock(const asn1SccVector3d& asnVal){
+        base::Vector3d rocktype;
+        Vector3d_fromAsn1(rocktype,asnVal);
+        return rocktype;
+    }
+
 }
 
