@@ -8,6 +8,7 @@ rock_vizkit_plugin(ASN_Viz-viz
         RigidBodyStateViz.hpp
         PointcloudViz.hpp
         DepthMapViz.hpp
+        TrajectoryViz.hpp
     DEPS ASN_Viz
     DEPS_PKGCONFIG base-types base_support sensor_samples_support base-viz
     HEADERS ASNViz.hpp)
