@@ -14,7 +14,7 @@ namespace vizkit3d
     class ASNViz : public vizkit3d::VizkitPluginFactory {
         public:
         
-        enum ASNPlugins {RigidBodyState, Motion2D, Pointcloud, LaserScan, DepthMap};
+        enum ASNPlugins {RigidBodyState, Motion2D, Pointcloud, LaserScan, DepthMap, Vector3d};
 
         ASNViz();      
 
