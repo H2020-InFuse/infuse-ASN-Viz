@@ -59,7 +59,14 @@ using namespace vizkit3d;
 //     DataHold(const GridMap<GridT> grid) 
 //         : grid(grid) 
 //     {
-//         this->heatMapGradient.createDefaultHeatMapGradient();
+//         this->heatMapGradient.createDefaul
+//     // Copy of the value given to updateDataIntern.
+//     //
+//     // Making a copy is required because of how OSG works
+//     virtual ~Data() { }
+//     virtual void visualize(osg::Geode& geode) const = 0;
+//     virtual maps::grid::CellExtents getCellExtents() const = 0;
+//     virtutHeatMapGradient();
 //     }
 
 //     void visualize(osg::Geode& geode) const
@@ -190,7 +197,7 @@ using namespace vizkit3d;
 //     }    
 // };
 
-MapVisualization::MapVisualization()
+MapVisualization::MapVisualization():heightFieldCreated(false)
 {}
 
 MapVisualization::~MapVisualization()
@@ -208,6 +215,32 @@ osg::ref_ptr<osg::Node> MapVisualization::createMainNode()
 
 void MapVisualization::updateMainNode ( osg::Node* node )
 {
+    if (!heightFieldCreated){
+        heightField= new osg::HeightField();
+        heightFieldCreated = true;
+        // map
+        // heightField->allocate(grid.getNumCells().x(), grid.getNumCells().y());
+        // heightField->setXInterval(grid.getResolution().x());
+        // heightField->setYInterval(grid.getResolution().y());
+        // heightField->setSkirtHeight(0.0f); 
+
+        // double min = grid.getMin(false);
+        // double default_value = grid.getDefaultValue();
+    }
+
+         for (unsigned int r = 0; r < heightField->getNumRows(); r++) 
+        {
+            for (unsigned int c = 0; c < heightField->getNumColumns(); c++) 
+            {
+                //GridT cell_value = grid.at(maps::grid::Index(c, r));
+                
+                // if( cell_value !=  default_value)
+                //     heightField->setHeight(c, r, cell_value);
+                // else
+                //     heightField->setHeight(c, r, min);    // min elevation
+            }
+        }   
+
     //if(!p) return;
 
     // Draw map.

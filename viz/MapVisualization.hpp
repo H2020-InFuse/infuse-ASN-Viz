@@ -60,7 +60,8 @@ namespace vizkit3d
             asn1SccMap map;           
 
             osg::ref_ptr<osg::Geode> geode;
-
+            osg::ref_ptr<osg::HeightField> heightField;
+            bool heightFieldCreated;
 
         public slots:
     };
