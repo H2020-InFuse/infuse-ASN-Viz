@@ -63,6 +63,12 @@ namespace vizkit3d
             osg::ref_ptr<osg::HeightField> heightField;
             bool heightFieldCreated;
 
+            template<class T> float getByPos(const int &x,const int &y){
+                asn1SccArray3D_data* dataptr = &(map.data.data);
+                unsigned int posidx = (x+(y*map.data.rowSize));
+                return *((T*)(dataptr+(posidx * sizeof(T))));
+            }
+
         public slots:
     };
 }

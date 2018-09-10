@@ -218,11 +218,12 @@ void MapVisualization::updateMainNode ( osg::Node* node )
     if (!heightFieldCreated){
         heightField= new osg::HeightField();
         heightFieldCreated = true;
+
         // map
-        // heightField->allocate(grid.getNumCells().x(), grid.getNumCells().y());
-        // heightField->setXInterval(grid.getResolution().x());
-        // heightField->setYInterval(grid.getResolution().y());
-        // heightField->setSkirtHeight(0.0f); 
+        heightField->allocate(map.data.rows, map.data.cols);
+        heightField->setXInterval(map.metadata.scale);
+        heightField->setYInterval(map.metadata.scale);
+        heightField->setSkirtHeight(0.0f); 
 
         // double min = grid.getMin(false);
         // double default_value = grid.getDefaultValue();
@@ -232,6 +233,12 @@ void MapVisualization::updateMainNode ( osg::Node* node )
         {
             for (unsigned int c = 0; c < heightField->getNumColumns(); c++) 
             {
+                float value = 0;
+                switch (map.data.depth){
+                    case asn1Sccdepth_8U: value = getByPos<uint8_t>(r,c);
+
+                }
+
                 //GridT cell_value = grid.at(maps::grid::Index(c, r));
                 
                 // if( cell_value !=  default_value)
