@@ -225,6 +225,24 @@ void MapVisualization::updateMainNode ( osg::Node* node )
         heightField->setYInterval(map.metadata.scale);
         heightField->setSkirtHeight(0.0f); 
 
+        osg::ref_ptr<osg::ShapeDrawable> drawable = new osg::ShapeDrawable(heightField);
+        geode->addDrawable(drawable);   
+
+        // set material properties
+        osg::StateSet* state = geode->getOrCreateStateSet();
+        osg::ref_ptr<osg::Material> mat = new osg::Material;
+        mat->setColorMode( osg::Material::AMBIENT_AND_DIFFUSE );
+
+        mat->setAmbient( osg::Material::FRONT_AND_BACK,
+                osg::Vec4( .5f, .5f, .3f, 1.0f ) );
+        mat->setDiffuse( osg::Material::FRONT_AND_BACK,
+                osg::Vec4( .5f, .5f, .3f, 1.0f ) );
+        //mat->setSpecular( osg::Material::FRONT,
+        //          osg::Vec4( 1.f, 1.f, 1.f, 1.0f ) );
+
+        state->setAttribute( mat.get() );
+
+
         // double min = grid.getMin(false);
         // double default_value = grid.getDefaultValue();
     }
@@ -236,13 +254,18 @@ void MapVisualization::updateMainNode ( osg::Node* node )
                 float value = 0;
                 switch (map.data.depth){
                     case asn1Sccdepth_8U: value = getByPos<uint8_t>(r,c);
-
+                    case asn1Sccdepth_8S: value = getByPos<int8_t>(r,c);
+                    case asn1Sccdepth_16U: value = getByPos<uint16_t>(r,c);
+                    case asn1Sccdepth_16S: value = getByPos<int16_t>(r,c);
+                    case asn1Sccdepth_32S: value = getByPos<int32_t>(r,c);
+                    case asn1Sccdepth_32F: value = getByPos<float>(r,c);
+                    case asn1Sccdepth_64F: value = getByPos<double>(r,c);
                 }
 
                 //GridT cell_value = grid.at(maps::grid::Index(c, r));
                 
-                // if( cell_value !=  default_value)
-                //     heightField->setHeight(c, r, cell_value);
+                //if( cell_value !=  default_value)
+                     heightField->setHeight(c, r, value);
                 // else
                 //     heightField->setHeight(c, r, min);    // min elevation
             }
