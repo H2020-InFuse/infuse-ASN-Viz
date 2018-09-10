@@ -18,7 +18,7 @@
   <depend package="cdff/CDFF" />
 
   <depend package="base/types" />
-  <depend package="slam/maps" />
+  <!-- <depend package="slam/maps" /> -->
 
   <depend package="types/base" />
   <depend package="types/base_support" />
