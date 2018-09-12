@@ -9,6 +9,7 @@ using namespace vizkit3d;
 #include "PointcloudViz.hpp"
 #include "DepthMapViz.hpp"
 #include "TrajectoryViz.hpp"
+#include "MapViz.hpp"
 
 
 
@@ -32,6 +33,7 @@ ASNViz::ASNViz(){
     registerViz("PointcloudViz", Pointcloud);
     registerViz("DepthMapViz", DepthMap);
     registerViz("TrajectoryViz", Vector3d);
+    registerViz("MapViz", Map);
 }
 
 
@@ -67,6 +69,7 @@ QObject* ASNViz::createPlugin(QString const& pluginName){
         case LaserScan:         return new LaserScanViz();
         case DepthMap:         return new DepthMapViz();
         case Vector3d:         return new TrajectoryViz();
+        case Map:               return new MapViz();
         default: return nullptr;
     };
 }

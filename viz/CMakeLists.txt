@@ -9,8 +9,8 @@ rock_vizkit_plugin(ASN_Viz-viz
         PointcloudViz.hpp
         DepthMapViz.hpp
         TrajectoryViz.hpp
-        MapVisualization.hpp
-    SOURCES MapVisualization.cpp
+        MapViz.hpp
+    SOURCES MapViz.cpp
     DEPS ASN_Viz
     DEPS_PKGCONFIG base-types base_support sensor_samples_support base-viz asn1
     HEADERS ASNViz.hpp)

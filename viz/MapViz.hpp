@@ -24,8 +24,8 @@
 // OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
-#ifndef MapVisualization_H
-#define MapVisualization_H
+#ifndef MapViz_H
+#define MapViz_H
 
 #include <vizkit3d/Vizkit3DPlugin.hpp>
 #include <asn1/Map.h>
@@ -34,21 +34,21 @@
 #include <osg/Shape>
 #include <osg/Texture2D>
 
+Q_DECLARE_METATYPE(asn1SccMap);
 
 namespace vizkit3d
 {
-    class MapVisualization
-        : public vizkit3d::Vizkit3DPlugin<asn1SccMap>
+    class MapViz : public vizkit3d::Vizkit3DPlugin<asn1SccMap>
     {
         Q_OBJECT
 
         //Q_PROPERTY(bool showMapExtents READ areMapExtentsShown WRITE setShowMapExtents)
 
         public:
-            MapVisualization();
-            ~MapVisualization();
+            MapViz();
+            ~MapViz();
 
-            Q_INVOKABLE void updateGridMapD(asn1SccMap const &sample)
+            Q_INVOKABLE void updateData(asn1SccMap const &sample)
             {vizkit3d::Vizkit3DPlugin<asn1SccMap>::updateData(sample);}   
             
         protected:
@@ -63,11 +63,22 @@ namespace vizkit3d
             osg::ref_ptr<osg::HeightField> heightField;
             bool heightFieldCreated;
 
-            template<class T> float getByPos(const int &x,const int &y){
-                asn1SccArray3D_data* dataptr = &(map.data.data);
-                unsigned int posidx = (x+(y*map.data.rowSize));
-                return *((T*)(dataptr+(posidx * sizeof(T))));
+
+            template<class T> float getValueByPos(const int &c,const int &r, int channel = 0){
+                byte* dataptr = map.data.data.arr;
+                //calulate memory position
+                //position in single channel Array3D byte*
+                unsigned int posidx = (c+(r*map.data.cols));
+                // printf("%i ",posidx);
+                //account for the data size
+                posidx *= sizeof(T);
+                //account for the number of existing channels, now points to first channel
+                posidx *= map.data.channels;
+                //select channel
+                posidx += (channel*sizeof(T));
+                return *((T*)(dataptr+posidx));
             }
+            osg::Image* createTextureImage();
 
         public slots:
     };
