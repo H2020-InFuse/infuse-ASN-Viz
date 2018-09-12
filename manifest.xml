@@ -24,5 +24,7 @@
   <depend package="types/base_support" />
   <depend package="types/sensor_samples"/>
   <depend package="types/sensor_samples_support" />
+
+  <depend package="infuse/asn1_types" />
   
 </package>
