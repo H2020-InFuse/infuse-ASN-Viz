@@ -36,6 +36,8 @@
 #include <osg/Geometry>
 #include <osgUtil/SmoothingVisitor>
 
+#include <vizkit3d/ColorConversionHelper.hpp>
+
 //#include "ColorGradient.hpp"
 
 using namespace vizkit3d;
@@ -43,7 +45,10 @@ using namespace vizkit3d;
 
 MapViz::MapViz()
 : mapColor(osg::Vec4(1,1,1,1.0)),
-  vizualizeMesh(true)
+  vizualizeMesh(true),
+  cycleColorInterval(1.0),
+  cycleColor(true)
+
 {
 }
 
@@ -89,6 +94,21 @@ float MapViz::getValue(const asn1SccMap &map, const int &c,const int &r, const i
     return 0;
 }
 
+void MapViz::addColor(osg::ref_ptr<osg::Vec4Array> colors, const float &height){
+    if( cycleColor )
+    {
+        osg::Vec4 color;
+        float sat = 1.0;
+        float lum = 0.6;
+        float hue = (height - std::floor(height / cycleColorInterval) * cycleColorInterval) / cycleColorInterval;
+        vizkit3d::hslToRgb( hue, sat, lum , color.x(), color.y(), color.z());
+        color.w() = mapColor.w();
+        colors->push_back(osg::Vec4(color));
+    }else{
+        colors->push_back(osg::Vec4(mapColor));
+    }
+}
+
 void MapViz::updateMainNode ( osg::Node* node )
 {
     geode->removeDrawables(0,geode->getNumDrawables());
@@ -96,16 +116,21 @@ void MapViz::updateMainNode ( osg::Node* node )
     if (vizualizeMesh){
     
         osg::ref_ptr<osg::Geometry> geom = new osg::Geometry();
-        osg::ref_ptr<osg::Vec4Array> color = new osg::Vec4Array;
-        color->push_back(osg::Vec4(mapColor));
-        osg::ref_ptr<osg::Vec3Array> vertices = new osg::Vec3Array;
+        osg::ref_ptr<osg::Vec4Array> colors = new osg::Vec4Array;
         
+        osg::ref_ptr<osg::Vec3Array> vertices = new osg::Vec3Array;
+        float value;
         for (unsigned int r = 0; r < map.data.rows-1; r++) 
         {
             for (unsigned int c = 0; c < map.data.cols; c++) 
             {
-                vertices->push_back(osg::Vec3d(r*map.metadata.scale,c*map.metadata.scale,getValue(map,c,r)));
-                vertices->push_back(osg::Vec3d((r+1)*map.metadata.scale,c*map.metadata.scale,getValue(map,c,r+1)));
+                value = getValue(map,c,r);
+                vertices->push_back(osg::Vec3d(r*map.metadata.scale,c*map.metadata.scale,value));
+                addColor(colors,value);
+
+                value = getValue(map,c,r+1);
+                vertices->push_back(osg::Vec3d((r+1)*map.metadata.scale,c*map.metadata.scale,value));
+                addColor(colors,value);
             }
 
             // for the smoothing operator to work we need a single triangle mesh,
@@ -117,19 +142,26 @@ void MapViz::updateMainNode ( osg::Node* node )
             }
             for (int c = map.data.cols-1; c >= 0; c--) 
             {
-                vertices->push_back(osg::Vec3d(r*map.metadata.scale,c*map.metadata.scale,getValue(map,c,r)));
-                vertices->push_back(osg::Vec3d((r+1)*map.metadata.scale,c*map.metadata.scale,getValue(map,c,r+1)));
+                value = getValue(map,c,r);
+                vertices->push_back(osg::Vec3d(r*map.metadata.scale,c*map.metadata.scale,value));
+                addColor(colors,value);
+                value = getValue(map,c,r+1);
+                vertices->push_back(osg::Vec3d((r+1)*map.metadata.scale,c*map.metadata.scale,value));
+                addColor(colors,value);
             }
-    
         }
 
-        geom->setColorArray(color, osg::Array::BIND_OVERALL);
+        // geom->setColorArray(colors, osg::Array::BIND_OVERALL);
+        geom->setColorArray(colors);
+        geom->setColorBinding(osg::Geometry::BIND_PER_VERTEX);
+
         geom->setVertexArray(vertices); 
         geom->addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::TRIANGLE_STRIP,0,map.data.rows*map.data.cols*2));
         geode->addDrawable(geom);
 
         osgUtil::SmoothingVisitor sv;
         geode->accept(sv); 
+        
 
     }else{//visualizeMesh
 
@@ -187,7 +219,22 @@ void MapViz::setMapColor(QColor color)
     mapColor.z() = color.blueF();
     mapColor.w() = color.alphaF();
 }
-
+bool MapViz::getCycleColor() const
+{
+    return cycleColor;
+}
+void MapViz::setCycleColor(bool enabled)
+{
+    cycleColor = enabled;
+}
+double MapViz::getCycleColorInterval() const
+{
+    return cycleColorInterval;
+}
+void MapViz::setCycleColorInterval(double interval)
+{
+    cycleColorInterval = interval;
+}
 
 //Macro that makes this plugin loadable in ruby, this is optional.
 //VizkitQtPlugin(ElevationMapVisualization)

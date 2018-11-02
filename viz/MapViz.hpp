@@ -46,12 +46,18 @@ namespace vizkit3d
 
         Q_PROPERTY(bool vizualize_mesh READ getMeshVisualized WRITE setMeshVisualized)
         Q_PROPERTY(QColor map_color READ getMapColor WRITE setMapColor)
+        Q_PROPERTY(bool cycleColor READ getCycleColor WRITE setCycleColor)
+        Q_PROPERTY(double  cycleColorInterval READ getCycleColorInterval WRITE setCycleColorInterval)
 
         public slots:
             bool getMeshVisualized() const;
             void setMeshVisualized(bool enabled);
             QColor getMapColor() const;
             void setMapColor(QColor color);
+            bool getCycleColor() const;
+            void setCycleColor(bool enabled);
+            double getCycleColorInterval() const;
+            void setCycleColorInterval(double interval);
 
         public:
             MapViz();
@@ -69,9 +75,13 @@ namespace vizkit3d
             asn1SccMap map;           
 
             osg::ref_ptr<osg::Geode> geode;
-            //osg::ref_ptr<osg::HeightField> heightField;
+            
             osg::Vec4 mapColor;
             bool vizualizeMesh;
+            double cycleColorInterval;
+            bool cycleColor;
+
+            void addColor(osg::ref_ptr<osg::Vec4Array> colors, const float &height);
 
             float getValue(const asn1SccMap &map, const int &c,const int &r, const int &channel = 0);
 
