@@ -44,6 +44,15 @@ namespace vizkit3d
 
         //Q_PROPERTY(bool showMapExtents READ areMapExtentsShown WRITE setShowMapExtents)
 
+        Q_PROPERTY(bool vizualize_mesh READ getMeshVisualized WRITE setMeshVisualized)
+        Q_PROPERTY(QColor map_color READ getMapColor WRITE setMapColor)
+
+        public slots:
+            bool getMeshVisualized() const;
+            void setMeshVisualized(bool enabled);
+            QColor getMapColor() const;
+            void setMapColor(QColor color);
+
         public:
             MapViz();
             ~MapViz();
@@ -60,11 +69,13 @@ namespace vizkit3d
             asn1SccMap map;           
 
             osg::ref_ptr<osg::Geode> geode;
-            osg::ref_ptr<osg::HeightField> heightField;
-            bool heightFieldCreated;
+            //osg::ref_ptr<osg::HeightField> heightField;
+            osg::Vec4 mapColor;
+            bool vizualizeMesh;
 
+            float getValue(const asn1SccMap &map, const int &c,const int &r, const int &channel = 0);
 
-            template<class T> float getValueByPos(const int &c,const int &r, int channel = 0){
+            template<class T> float getValueByPos(const int &c,const int &r, const int &channel = 0){
                 byte* dataptr = map.data.data.arr;
                 //calulate memory position
                 //position in single channel Array3D byte*
@@ -78,7 +89,6 @@ namespace vizkit3d
                 posidx += (channel*sizeof(T));
                 return *((T*)(dataptr+posidx));
             }
-            osg::Image* createTextureImage();
 
         public slots:
     };
