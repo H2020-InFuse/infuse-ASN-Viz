@@ -125,11 +125,11 @@ void MapViz::updateMainNode ( osg::Node* node )
             for (unsigned int c = 0; c < map.data.cols; c++) 
             {
                 value = getValue(map,c,r);
-                vertices->push_back(osg::Vec3d(r*map.metadata.scale,c*map.metadata.scale,value));
+                vertices->push_back(osg::Vec3d((r*map.metadata.scale),-(c*map.metadata.scale),value));
                 addColor(colors,value);
 
                 value = getValue(map,c,r+1);
-                vertices->push_back(osg::Vec3d((r+1)*map.metadata.scale,c*map.metadata.scale,value));
+                vertices->push_back(osg::Vec3d(((r+1)*map.metadata.scale),-(c*map.metadata.scale),value));
                 addColor(colors,value);
             }
 
@@ -143,10 +143,10 @@ void MapViz::updateMainNode ( osg::Node* node )
             for (int c = map.data.cols-1; c >= 0; c--) 
             {
                 value = getValue(map,c,r);
-                vertices->push_back(osg::Vec3d(r*map.metadata.scale,c*map.metadata.scale,value));
+                vertices->push_back(osg::Vec3d((r*map.metadata.scale),-(c*map.metadata.scale),value));
                 addColor(colors,value);
                 value = getValue(map,c,r+1);
-                vertices->push_back(osg::Vec3d((r+1)*map.metadata.scale,c*map.metadata.scale,value));
+                vertices->push_back(osg::Vec3d(((r+1)*map.metadata.scale),-(c*map.metadata.scale),value));
                 addColor(colors,value);
             }
         }
