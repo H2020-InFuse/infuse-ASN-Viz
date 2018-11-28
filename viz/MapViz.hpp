@@ -65,12 +65,12 @@ namespace vizkit3d
 
             Q_INVOKABLE void updateData(asn1SccMap const &sample)
             {vizkit3d::Vizkit3DPlugin<asn1SccMap>::updateData(sample);}   
-            
+
         protected:
             virtual osg::ref_ptr<osg::Node> createMainNode();
             virtual void updateMainNode(osg::Node* node);
             virtual void updateDataIntern(asn1SccMap const& plan);
-            
+
         private:
             asn1SccMap map;           
 
@@ -80,6 +80,8 @@ namespace vizkit3d
             bool vizualizeMesh;
             double cycleColorInterval;
             bool cycleColor;
+
+            const double HEIGHT_SCALE;
 
             void addColor(osg::ref_ptr<osg::Vec4Array> colors, const float &height);
 
@@ -97,7 +99,7 @@ namespace vizkit3d
                 posidx *= map.data.channels;
                 //select channel
                 posidx += (channel*sizeof(T));
-                return *((T*)(dataptr+posidx));
+                return *((T*)(dataptr+posidx)) * HEIGHT_SCALE;
             }
 
         public slots:
