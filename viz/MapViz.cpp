@@ -147,10 +147,9 @@ void MapViz::updateMainNode ( osg::Node* node )
             // for the smoothing operator to work we need a single triangle mesh,
             // so now we move the next row backwards
             r++;
-            // TODO there is a strange edge that we can't really explain, something has to be changed here:
-            if (r == map.data.rows){
-                // r+1 is used in the next column, end reached
-                break;
+            if (r == map.data.rows - 1){
+                // end reached, we only replicate the last column here
+                r--;
             }
             for (int c = map.data.cols-1; c >= 0; c--) 
             {
