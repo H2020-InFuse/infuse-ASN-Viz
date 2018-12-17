@@ -49,7 +49,7 @@ MapViz::MapViz()
   vizualizeMesh(true),
   cycleColorInterval(1.0),
   cycleColor(true),
-  HEIGHT_SCALE(0.001)
+  HEIGHT_SCALE(1.0)
 {
 }
 
