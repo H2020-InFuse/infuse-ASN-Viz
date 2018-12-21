@@ -25,6 +25,7 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 #include <iostream>
+#include <limits>
 
 #include "MapViz.hpp"
 
@@ -47,8 +48,8 @@ MapViz::MapViz()
 : mapColor(osg::Vec4(1,1,1,1.0)),
   vizualizeMesh(true),
   cycleColorInterval(1.0),
-  cycleColor(true)
-
+  cycleColor(true),
+  HEIGHT_SCALE(1.0)
 {
 }
 
@@ -113,11 +114,21 @@ void MapViz::updateMainNode ( osg::Node* node )
 {
     geode->removeDrawables(0,geode->getNumDrawables());
 
+    double undefined = std::numeric_limits<double>::quiet_NaN();
+    for(int i = 0; i < map.metadata.errValues.nCount; i++)
+    {
+        if(map.metadata.errValues.arr[i].type == asn1Sccerror_UNDEFINED)
+        {
+            undefined = map.metadata.errValues.arr[i].value;
+            break;
+        }
+    }
+
     if (vizualizeMesh){
     
         osg::ref_ptr<osg::Geometry> geom = new osg::Geometry();
         osg::ref_ptr<osg::Vec4Array> colors = new osg::Vec4Array;
-        
+
         osg::ref_ptr<osg::Vec3Array> vertices = new osg::Vec3Array;
         float value;
         for (unsigned int r = 0; r < map.data.rows-1; r++) 
@@ -136,9 +147,9 @@ void MapViz::updateMainNode ( osg::Node* node )
             // for the smoothing operator to work we need a single triangle mesh,
             // so now we move the next row backwards
             r++;
-            if (r == map.data.rows){
-                // r+1 is used in the next column, end reached
-                break;
+            if (r == map.data.rows - 1){
+                // end reached, we only replicate the last column here
+                r--;
             }
             for (int c = map.data.cols-1; c >= 0; c--) 
             {
@@ -169,7 +180,7 @@ void MapViz::updateMainNode ( osg::Node* node )
         {
             for (unsigned int c = 0; c < map.data.cols; c++) 
             {
-                float value = 0;
+                double value = 0.0;
                 switch (map.data.depth){
                     case asn1Sccdepth_8U: value = getValueByPos<uint8_t>(c,r);break;
                     case asn1Sccdepth_8S: value = getValueByPos<int8_t>(c,r);break;
@@ -180,13 +191,20 @@ void MapViz::updateMainNode ( osg::Node* node )
                     case asn1Sccdepth_64F: value = getValueByPos<double>(c,r);break;
                 }
 
+                if(value == HEIGHT_SCALE * undefined)
+                    continue;
+
                 osg::ref_ptr<osg::Box> newbox = new osg::Box(
-                                    osg::Vec3d(r*map.metadata.scale + map.metadata.scale/2.0,c*map.metadata.scale + map.metadata.scale/2.0,value/2.0),
-                                    map.metadata.scale,map.metadata.scale,value
+                                    osg::Vec3d(r*map.metadata.scale + map.metadata.scale/2.0,
+                                               -(c*map.metadata.scale + map.metadata.scale/2.0),
+                                               value/2.0),
+                                    map.metadata.scale,
+                                    map.metadata.scale,
+                                    value
                                     );
                 osg::ref_ptr<osg::ShapeDrawable> boxdrawable = new osg::ShapeDrawable(newbox);
                 boxdrawable->setColor(mapColor);
-                geode->addDrawable(boxdrawable);   
+                geode->addDrawable(boxdrawable);
             }
         }
     }
